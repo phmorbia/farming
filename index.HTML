@@ -1,0 +1,705 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>FarmAssist — Demo (HTML/CSS/JS)</title>
+<style>
+  :root{
+    --bg:#f6fbf6; --card:#fff; --accent:#2f855a; --muted:#7b7b7b;
+    --glass: rgba(255,255,255,0.8);
+  }
+  *{box-sizing:border-box;font-family:Inter,system-ui,Segoe UI,Roboto,"Helvetica Neue",Arial;}
+  body{margin:0;background:linear-gradient(180deg,#f0fff4 0%,var(--bg) 100%);color:#0f172a;min-height:100vh;}
+  header{display:flex;align-items:center;justify-content:space-between;padding:14px 28px;}
+  .brand{font-weight:700;color:var(--accent);font-size:18px}
+  .top-actions{display:flex;gap:12px;align-items:center;font-size:14px;color:var(--muted)}
+  .container{max-width:1100px;margin:28px auto;padding:20px;}
+  .card{background:var(--card);border-radius:18px;padding:28px;box-shadow:0 6px 22px rgba(31,41,55,0.06)}
+  .center-wrap{min-height:64vh;display:flex;align-items:center;justify-content:center}
+  /* Home box */
+  .home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
+  .big-box{border-radius:16px;padding:42px 18px;text-align:center;border:1px solid rgba(47,133,90,0.08);
+    cursor:pointer;transition:transform .14s, box-shadow .14s;background:linear-gradient(180deg, rgba(255,255,255,0.8), rgba(255,255,255,0.6))}
+  .big-box:hover{transform:translateY(-6px);box-shadow:0 10px 30px rgba(47,133,90,0.08)}
+  .big-box h2{margin:0;font-size:22px;color:var(--accent)}
+  .muted{color:var(--muted);font-size:13px;margin-top:12px}
+  /* forms */
+  .two{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  input,select,textarea{width:100%;padding:10px;border-radius:8px;border:1px solid #e6eef0;font-size:14px}
+  label{font-size:13px;color:#444;margin-bottom:6px;display:block}
+  .btn{display:inline-block;padding:10px 14px;border-radius:10px;border:none;cursor:pointer}
+  .btn-primary{background:var(--accent);color:white}
+  .btn-ghost{background:transparent;border:1px solid #e6eef0}
+  .small{font-size:13px;color:var(--muted)}
+  nav.tabs{display:flex;gap:8px;margin-bottom:12px}
+  nav.tabs button{padding:8px 12px;border-radius:999px;background:#f1fdf6;border:1px solid rgba(47,133,90,0.06);cursor:pointer}
+  .hidden{display:none}
+  .center-top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+  .grid-4{display:grid;grid-template-columns:repeat(2,1fr);gap:12px}
+  .price-card{padding:14px;border-radius:12px;border:1px solid #f0f2f5;text-align:center}
+  .price{font-weight:700;font-size:18px;color:#0f5b3d}
+  footer{padding:20px;text-align:center;color:var(--muted);font-size:13px;margin-top:18px}
+  .notice{background:#fffbe6;border-left:4px solid #fbbf24;padding:10px;border-radius:8px;margin-bottom:12px}
+  /* responsive */
+  @media (max-width:900px){
+    .home-grid{grid-template-columns:1fr}
+    .two{grid-template-columns:1fr}
+    .grid-4{grid-template-columns:1fr}
+  }
+  /* admin table */
+  table{width:100%;border-collapse:collapse;font-size:13px}
+  th,td{padding:8px;border-bottom:1px solid #eef2f7;text-align:left}
+  th{background:#fbfffb}
+</style>
+</head>
+<body>
+<header>
+  <div class="brand">FarmAssist</div>
+  <div class="top-actions small">
+    <select id="langSelect" title="Change language">
+      <option value="en">EN</option><option value="hi">हिंदी</option>
+    </select>
+    <a href="#help" id="helpBtn">Help</a> · <a href="#sitemap" id="sitemapBtn">Site map</a> · <a href="#how" id="howBtn">How to use</a>
+  </div>
+</header>
+
+<main class="container">
+  <!-- main area -->
+  <div id="view-home" class="card center-wrap">
+    <div style="width:100%">
+      <div class="center-top">
+        <div></div>
+        <div class="small">Change language · Help · Site map · How to Use</div>
+      </div>
+
+      <div style="text-align:center;margin-top:18px;">
+        <h1 style="margin:6px 0 8px 0;font-size:28px">FarmAssist — Farming / Gardening / Market</h1>
+        <p class="small">Select an option to begin. Live prices available without login.</p>
+      </div>
+
+      <div class="home-grid" style="margin-top:24px">
+        <div class="big-box" id="open-farming">
+          <h2>FARMING</h2>
+          <p class="muted">Login as Farm / Farmer / Employee · Create accounts</p>
+        </div>
+
+        <div class="big-box" id="open-gardening">
+          <h2>GARDENING</h2>
+          <p class="muted">Small-plot gardener flows · Choose vegetables / fruits / flowers</p>
+        </div>
+
+        <div class="big-box" id="open-market">
+          <h2>BUY / SELL</h2>
+          <p class="muted">Market listings, buy & sell, and live prices</p>
+        </div>
+      </div>
+
+      <p class="small" style="margin-top:18px;text-align:center">Owner-managed News & Help · Admin area available</p>
+    </div>
+  </div>
+
+  <!-- FARMING -->
+  <div id="view-farming" class="card hidden">
+    <button class="btn btn-ghost" onclick="goHome()">← Back</button>
+    <h2 style="margin-top:10px">Farming — Login / Register</h2>
+    <div style="margin-top:12px">
+      <div class="two">
+        <div>
+          <nav class="tabs">
+            <button onclick="showFarmTab('farm')">Farm ID</button>
+            <button onclick="showFarmTab('farmer')">Farmer ID</button>
+            <button onclick="showFarmTab('employee')">Employee ID</button>
+          </nav>
+
+          <!-- login forms -->
+          <div id="farm-login" class="">
+            <label>Farm ID</label>
+            <input id="farmLoginId" placeholder="Farm property ID">
+            <label style="margin-top:8px">Password</label>
+            <input id="farmLoginPass" type="password">
+            <div style="margin-top:8px"><button class="btn btn-primary" onclick="farmingLogin('farm')">Login</button>
+            <button class="btn btn-ghost" onclick="showFarmingRegister()">Create new account</button></div>
+          </div>
+
+          <div id="farmer-login" class="hidden">
+            <label>Farmer ID</label><input id="farmerLoginId" placeholder="Farmer ID">
+            <label style="margin-top:8px">Password</label><input id="farmerLoginPass" type="password">
+            <div style="margin-top:8px"><button class="btn btn-primary" onclick="farmingLogin('farmer')">Login</button>
+            <button class="btn btn-ghost" onclick="showFarmingRegister()">Create new account</button></div>
+          </div>
+
+          <div id="employee-login" class="hidden">
+            <label>Employee ID</label><input id="employeeLoginId" placeholder="Employee ID">
+            <label style="margin-top:8px">Password</label><input id="employeeLoginPass" type="password">
+            <div style="margin-top:8px"><button class="btn btn-primary" onclick="farmingLogin('employee')">Login</button>
+            <button class="btn btn-ghost" onclick="showFarmingRegister('employee')">Create new account</button></div>
+          </div>
+        </div>
+
+        <!-- right: info / link -->
+        <div>
+          <div class="notice">
+            <strong>New users:</strong> creating account will open a detailed form. Farm accounts require farm property documents.
+          </div>
+          <div style="margin-top:12px">
+            <button class="btn btn-ghost" onclick="openAdmin()">Admin panel</button>
+            <div style="margin-top:12px" class="small">Connect farm to farmer: use Dashboard after login to link IDs.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FARM REGISTER -->
+  <div id="view-farm-register" class="card hidden">
+    <button class="btn btn-ghost" onclick="backToFarming()">← Back</button>
+    <h2 style="margin-top:10px">Create Farm / Farmer / Employee Account</h2>
+
+    <nav class="tabs" style="margin-top:12px">
+      <button onclick="showRegTab('farmerForm')">Farmer</button>
+      <button onclick="showRegTab('farmForm')">Farm</button>
+      <button onclick="showRegTab('employeeForm')">Employee</button>
+    </nav>
+
+    <div id="farmerForm" class="">
+      <h3>Farmer Account</h3>
+      <div class="two">
+        <div>
+          <label>Name</label><input id="reg_farmer_name">
+          <label>Email (optional)</label><input id="reg_farmer_email">
+          <label>Phone</label><input id="reg_farmer_phone">
+          <label>City</label><input id="reg_farmer_city">
+          <label>State</label><input id="reg_farmer_state">
+        </div>
+        <div>
+          <label>PIN Code</label><input id="reg_farmer_pin">
+          <label>Birthdate</label><input id="reg_farmer_birth" type="date">
+          <label>Aadhaar Card</label><input id="reg_farmer_aadhaar">
+          <label>Farmer Photo (optional)</label><input type="file" id="reg_farmer_photo">
+          <label>Farm Property Paper (upload)</label><input type="file" id="reg_farmer_property">
+        </div>
+      </div>
+      <label>Preferred Login ID (will auto-generate if left blank)</label>
+      <input id="reg_farmer_login">
+      <label>Password</label><input id="reg_farmer_pass" type="password">
+      <div style="margin-top:10px"><button class="btn btn-primary" onclick="createFarmer()">Create Farmer</button></div>
+    </div>
+
+    <div id="farmForm" class="hidden">
+      <h3>Farm Account</h3>
+      <p class="small">This form collects farm history and characteristics.</p>
+      <label>Farm Property ID (required)</label><input id="reg_farm_prop">
+      <div class="two" style="margin-top:8px">
+        <div>
+          <label>Farm Area (hectares)</label><input id="reg_farm_area" type="number" step="0.01">
+          <label>Type of Farm</label><input id="reg_farm_type">
+          <label>Water Storage Capacity (liters)</label><input id="reg_farm_water" type="number">
+        </div>
+        <div>
+          <label>Past Crop History (comma separated)</label><input id="reg_farm_pastcrop">
+          <label>Farm Ownership History (text)</label><textarea id="reg_farm_own" rows="4"></textarea>
+          <label>Other Facilities (text)</label><input id="reg_farm_fac">
+        </div>
+      </div>
+      <label>Login ID for Farm (must match property id by default)</label><input id="reg_farm_login">
+      <label>Password</label><input id="reg_farm_pass" type="password">
+      <div style="margin-top:10px"><button class="btn btn-primary" onclick="createFarm()">Create Farm</button></div>
+    </div>
+
+    <div id="employeeForm" class="hidden">
+      <h3>Employee Account</h3>
+      <div class="two">
+        <div>
+          <label>Name</label><input id="reg_emp_name">
+          <label>Email (optional)</label><input id="reg_emp_email">
+          <label>Phone</label><input id="reg_emp_phone">
+          <label>City</label><input id="reg_emp_city">
+        </div>
+        <div>
+          <label>State</label><input id="reg_emp_state">
+          <label>PIN Code</label><input id="reg_emp_pin">
+          <label>Birthdate</label><input id="reg_emp_birth" type="date">
+          <label>Aadhaar Card</label><input id="reg_emp_aadhaar">
+        </div>
+      </div>
+      <label>Experience & Skills</label><textarea id="reg_emp_skills" rows="3"></textarea>
+      <label>Login ID (auto if left blank)</label><input id="reg_emp_login">
+      <label>Password</label><input id="reg_emp_pass" type="password">
+      <div style="margin-top:10px"><button class="btn btn-primary" onclick="createEmployee()">Create Employee</button></div>
+    </div>
+  </div>
+
+  <!-- Gardening -->
+  <div id="view-gardening" class="card hidden">
+    <button class="btn btn-ghost" onclick="goHome()">← Back</button>
+    <h2 style="margin-top:10px">Gardening — Login</h2>
+    <div style="margin-top:10px" class="two">
+      <div>
+        <label>Email or Phone</label><input id="gardLoginUser">
+        <label>Password</label><input id="gardLoginPass" type="password">
+        <div style="margin-top:8px">
+          <button class="btn btn-primary" onclick="gardeningLogin()">Login</button>
+          <button class="btn btn-ghost" onclick="showGardRegister()">Create new account</button>
+        </div>
+      </div>
+      <div>
+        <div class="notice"><strong>Gardeners</strong>: after login choose to grow Vegetables / Fruits / Plants / Flowers and give area & soil type.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-gard-register" class="card hidden">
+    <button class="btn btn-ghost" onclick="backToGard()">← Back</button>
+    <h2 style="margin-top:10px">Create Gardening Account</h2>
+    <div class="two">
+      <div>
+        <label>Name</label><input id="gard_reg_name">
+        <label>Email (optional)</label><input id="gard_reg_email">
+        <label>Phone</label><input id="gard_reg_phone">
+      </div>
+      <div>
+        <label>Address</label><input id="gard_reg_addr">
+        <label>City</label><input id="gard_reg_city">
+        <label>State</label><input id="gard_reg_state">
+      </div>
+    </div>
+    <label>Preferred Login ID</label><input id="gard_reg_login">
+    <label>Password</label><input id="gard_reg_pass" type="password">
+    <div style="margin-top:8px"><button class="btn btn-primary" onclick="createGardener()">Create Gardening Account</button></div>
+  </div>
+
+  <div id="view-gard-dashboard" class="card hidden">
+    <button class="btn btn-ghost" onclick="showGardening()">← Back</button>
+    <h2 style="margin-top:10px">Gardening Dashboard</h2>
+    <p class="small">What would you like to grow?</p>
+    <div class="grid-4" style="margin-top:8px">
+      <div class="price-card"><button class="btn" onclick="gardChoose('Vegetables')">Grow Vegetables</button></div>
+      <div class="price-card"><button class="btn" onclick="gardChoose('Fruits')">Grow Fruits</button></div>
+      <div class="price-card"><button class="btn" onclick="gardChoose('Plants/Flowers')">Grow Plants/Flowers</button></div>
+    </div>
+
+    <div id="gard-form" style="margin-top:12px" class="hidden">
+      <label>Area (sq meters)</label><input id="gard_area" type="number" step="1">
+      <label>Soil type</label><input id="gard_soil">
+      <div style="margin-top:8px"><button class="btn btn-primary" onclick="gardSubmit()">Submit</button></div>
+    </div>
+  </div>
+
+  <!-- MARKET -->
+  <div id="view-market" class="card hidden">
+    <button class="btn btn-ghost" onclick="goHome()">← Back</button>
+    <h2 style="margin-top:10px">Buy / Sell — Login</h2>
+    <div class="two">
+      <div>
+        <label>Email or Phone</label><input id="marketLoginUser">
+        <label>Password</label><input id="marketLoginPass" type="password">
+        <div style="margin-top:8px">
+          <button class="btn btn-primary" onclick="marketLogin()">Login</button>
+          <button class="btn btn-ghost" onclick="showMarketRegister()">Create new account</button>
+        </div>
+        <p class="small" style="margin-top:6px">Or <a href="#" onclick="showPrices()">View live prices (no login)</a></p>
+      </div>
+      <div>
+        <div class="notice"><strong>Buyers & Sellers:</strong> supply bank details when registering. Listings & price graphs after login.</div>
+      </div>
+    </div>
+  </div>
+
+  <div id="view-market-register" class="card hidden">
+    <button class="btn btn-ghost" onclick="backToMarket()">← Back</button>
+    <h2 style="margin-top:10px">Create Buyer / Seller Account</h2>
+    <label>Type</label>
+    <select id="market_reg_type">
+      <option>Buyer</option><option>Seller</option><option>Both</option>
+    </select>
+    <div class="two" style="margin-top:8px">
+      <div>
+        <label>Name</label><input id="market_reg_name">
+        <label>Phone</label><input id="market_reg_phone">
+        <label>Address</label><input id="market_reg_addr">
+      </div>
+      <div>
+        <label>City</label><input id="market_reg_city">
+        <label>State</label><input id="market_reg_state">
+        <label>PIN Code</label><input id="market_reg_pin">
+      </div>
+    </div>
+    <label style="margin-top:8px">Aadhaar (optional)</label><input id="market_reg_aadhaar">
+    <label>Bank details (IFSC, Account)</label><input id="market_reg_bank">
+    <label>Preferred Login ID</label><input id="market_reg_login">
+    <label>Password</label><input id="market_reg_pass" type="password">
+    <div style="margin-top:8px"><button class="btn btn-primary" onclick="createMarketUser()">Create Account</button></div>
+  </div>
+
+  <div id="view-prices" class="card hidden">
+    <button class="btn btn-ghost" onclick="goHome()">← Back</button>
+    <h2 style="margin-top:10px">Live Prices</h2>
+    <p class="small">Prices update automatically (simulated). Login to add listings.</p>
+    <div class="grid-4" style="margin-top:14px" id="pricesGrid"></div>
+  </div>
+
+  <!-- ADMIN -->
+  <div id="view-admin" class="card hidden">
+    <button class="btn btn-ghost" onclick="goHome()">← Back</button>
+    <h2 style="margin-top:10px">Admin Panel</h2>
+    <div style="margin-top:8px" class="two">
+      <div>
+        <label>Admin Password</label><input id="adminPass" type="password">
+        <div style="margin-top:8px"><button class="btn btn-primary" onclick="checkAdmin()">Open Admin</button></div>
+      </div>
+      <div>
+        <div class="small">Admin can view all users, set a common override password, and publish news.</div>
+      </div>
+    </div>
+
+    <div id="adminArea" class="hidden" style="margin-top:12px">
+      <h3>Users</h3>
+      <table id="adminUsers"><thead><tr><th>ID</th><th>Type</th><th>Name / Login</th><th>Phone</th></tr></thead><tbody></tbody></table>
+
+      <h3 style="margin-top:12px">Publish News</h3>
+      <label>Title</label><input id="newsTitle">
+      <label>Body</label><textarea id="newsBody" rows="3"></textarea>
+      <div style="margin-top:8px"><button class="btn btn-primary" onclick="publishNews()">Publish</button></div>
+
+      <h3 style="margin-top:12px">Common Password (override)</h3>
+      <label>Common password</label><input id="commonPassword">
+      <div style="margin-top:8px"><button class="btn btn-primary" onclick="setCommonPass()">Set</button></div>
+
+      <h3 style="margin-top:12px">Audit Log</h3>
+      <div id="auditList" class="small" style="background:#fbfbfb;padding:8px;border-radius:8px"></div>
+    </div>
+  </div>
+
+  <footer class="small">© FarmAssist — Demo. Data stored locally in this browser. Not production-ready. Use this as a prototype.</footer>
+</main>
+
+<script>
+/* -------------------------
+  Simple SPA-like navigation
+--------------------------*/
+const views = {
+  home: document.getElementById('view-home'),
+  farming: document.getElementById('view-farming'),
+  farmRegister: document.getElementById('view-farm-register'),
+  gardening: document.getElementById('view-gardening'),
+  gardReg: document.getElementById('view-gard-register'),
+  gardDash: document.getElementById('view-gard-dashboard'),
+  market: document.getElementById('view-market'),
+  marketReg: document.getElementById('view-market-register'),
+  prices: document.getElementById('view-prices'),
+  admin: document.getElementById('view-admin')
+};
+function hideAll(){Object.values(views).forEach(v=>v.classList.add('hidden'))}
+function goHome(){hideAll();views.home.classList.remove('hidden')}
+document.getElementById('open-farming').onclick = ()=>{hideAll();views.farming.classList.remove('hidden')}
+document.getElementById('open-gardening').onclick = ()=>{hideAll();views.gardening.classList.remove('hidden')}
+document.getElementById('open-market').onclick = ()=>{hideAll();views.market.classList.remove('hidden')}
+function showFarmingRegister(){hideAll();views.farmRegister.classList.remove('hidden')}
+function backToFarming(){hideAll();views.farming.classList.remove('hidden')}
+function showGardRegister(){hideAll();views.gardReg.classList.remove('hidden')}
+function backToGard(){hideAll();views.gardening.classList.remove('hidden')}
+function showMarketRegister(){hideAll();views.marketReg.classList.remove('hidden')}
+function backToMarket(){hideAll();views.market.classList.remove('hidden')}
+function showPrices(){hideAll();views.prices.classList.remove('hidden');renderPrices()}
+
+function openAdmin(){hideAll();views.admin.classList.remove('hidden')}
+
+/* -------------------------
+  Farming login tabs
+--------------------------*/
+function showFarmTab(t){
+  document.getElementById('farm-login').classList.toggle('hidden', t!=='farm')
+  document.getElementById('farmer-login').classList.toggle('hidden', t!=='farmer')
+  document.getElementById('employee-login').classList.toggle('hidden', t!=='employee')
+}
+function showRegTab(t){
+  document.getElementById('farmerForm').classList.toggle('hidden', t!=='farmerForm')
+  document.getElementById('farmForm').classList.toggle('hidden', t!=='farmForm')
+  document.getElementById('employeeForm').classList.toggle('hidden', t!=='employeeForm')
+}
+
+/* -------------------------
+  LocalStorage helpers (prototype DB)
+--------------------------*/
+function dbGet(key){try{return JSON.parse(localStorage.getItem(key)||'null')}catch(e){return null}}
+function dbSet(key,val){localStorage.setItem(key,JSON.stringify(val))}
+function addAudit(action,meta){
+  const logs = dbGet('audit')||[]
+  logs.unshift({at: new Date().toISOString(), action, meta})
+  dbSet('audit',logs.slice(0,200))
+}
+
+/* Initialize storage */
+if(!dbGet('users')) dbSet('users',[])
+if(!dbGet('farms')) dbSet('farms',[])
+if(!dbGet('listings')) dbSet('listings',[])
+if(!dbGet('news')) dbSet('news',[])
+if(!dbGet('common_password')) dbSet('common_password',null)
+
+/* -------------------------
+  Create accounts
+--------------------------*/
+function uid(prefix='u'){return prefix+'_'+Math.random().toString(36).slice(2,10)}
+function createFarmer(){
+  const users = dbGet('users')||[]
+  const id = uid('farmer')
+  const login = document.getElementById('reg_farmer_login').value.trim() || ('farmer_'+Math.floor(Math.random()*9000+1000))
+  if(users.some(u=>u.login===login)){alert('Login already used');return}
+  const u = {
+    id, type:'farmer', name:document.getElementById('reg_farmer_name').value||'',
+    email:document.getElementById('reg_farmer_email').value||'',
+    phone:document.getElementById('reg_farmer_phone').value||'',
+    city:document.getElementById('reg_farmer_city').value||'',
+    state:document.getElementById('reg_farmer_state').value||'',
+    pin:document.getElementById('reg_farmer_pin').value||'',
+    birth:document.getElementById('reg_farmer_birth').value||'',
+    aadhaar:document.getElementById('reg_farmer_aadhaar').value||'',
+    login, password:document.getElementById('reg_farmer_pass').value||'',
+    linkedFarm: null,
+    createdAt:new Date().toISOString()
+  }
+  users.push(u); dbSet('users',users); addAudit('create_farmer',u)
+  alert('Farmer created. Login ID: '+login)
+  showFarmingRegister()
+}
+
+function createFarm(){
+  const farms = dbGet('farms')||[]
+  const prop = document.getElementById('reg_farm_prop').value.trim()
+  if(!prop){alert('Farm property id required');return}
+  if(farms.some(f=>f.propertyId===prop)){alert('Farm property ID exists');return}
+  const farm = {
+    id:uid('farm'),
+    propertyId:prop,
+    area:document.getElementById('reg_farm_area').value||'',
+    type:document.getElementById('reg_farm_type').value||'',
+    water:document.getElementById('reg_farm_water').value||'',
+    pastCrop:document.getElementById('reg_farm_pastcrop').value||'',
+    ownershipHistory:document.getElementById('reg_farm_own').value||'',
+    otherFacilities:document.getElementById('reg_farm_fac').value||'',
+    login: document.getElementById('reg_farm_login').value.trim() || prop,
+    password:document.getElementById('reg_farm_pass').value||'',
+    createdAt:new Date().toISOString()
+  }
+  farms.push(farm); dbSet('farms',farms); addAudit('create_farm',farm)
+  alert('Farm created. Login ID: '+farm.login)
+  showFarmingRegister()
+}
+
+function createEmployee(){
+  const users = dbGet('users')||[]
+  const login = document.getElementById('reg_emp_login').value.trim() || ('emp_'+Math.floor(Math.random()*9000+1000))
+  if(users.some(u=>u.login===login)){alert('Login exists');return}
+  const u = {
+    id: uid('emp'), type:'employee',
+    name: document.getElementById('reg_emp_name').value||'',
+    email: document.getElementById('reg_emp_email').value||'', phone:document.getElementById('reg_emp_phone').value||'',
+    city:document.getElementById('reg_emp_city').value||'', state:document.getElementById('reg_emp_state').value||'',
+    pin:document.getElementById('reg_emp_pin').value||'', birth:document.getElementById('reg_emp_birth').value||'',
+    aadhaar:document.getElementById('reg_emp_aadhaar').value||'', skills:document.getElementById('reg_emp_skills').value||'',
+    login, password:document.getElementById('reg_emp_pass').value||'',
+    createdAt:new Date().toISOString()
+  }
+  users.push(u); dbSet('users',users); addAudit('create_employee',u)
+  alert('Employee created. Login ID: '+login)
+  showFarmingRegister()
+}
+
+/* -------------------------
+  Farming login (simple)
+--------------------------*/
+function farmingLogin(kind){
+  const users = dbGet('users')||[]
+  const farms = dbGet('farms')||[]
+  if(kind==='farm'){
+    const id = document.getElementById('farmLoginId').value.trim()
+    const pass = document.getElementById('farmLoginPass').value
+    const f = farms.find(x=>x.login===id || x.propertyId===id)
+    const cp = dbGet('common_password')
+    if((f && f.password===pass) || (cp && cp===pass)){alert('Farm login success'); showFarmDashboard(f||{login:id}); addAudit('login_farm', {id})}
+    else alert('Invalid farm id / password')
+  } else if(kind==='farmer'){
+    const id = document.getElementById('farmerLoginId').value.trim()
+    const pass = document.getElementById('farmerLoginPass').value
+    const u = users.find(x=>x.type==='farmer' && x.login===id)
+    const cp = dbGet('common_password')
+    if((u && u.password===pass) || (cp && cp===pass)){alert('Farmer login success'); showUserDash(u); addAudit('login_farmer',{id})}
+    else alert('Invalid farmer id / password')
+  } else {
+    const id = document.getElementById('employeeLoginId').value.trim()
+    const pass = document.getElementById('employeeLoginPass').value
+    const u = users.find(x=>x.type==='employee' && x.login===id)
+    const cp = dbGet('common_password')
+    if((u && u.password===pass) || (cp && cp===pass)){alert('Employee login success'); showUserDash(u); addAudit('login_employee',{id})}
+    else alert('Invalid employee id / password')
+  }
+}
+
+/* -------------------------
+  Simple dashboards (placeholders)
+--------------------------*/
+function showFarmDashboard(farm){
+  hideAll()
+  // simple prompt to link farmer -> farm
+  views.home.classList.remove('hidden')
+  alert('Welcome to Farm Dashboard (prototype). Use admin or user pages to manage connections.')
+}
+
+function showUserDash(user){
+  hideAll()
+  views.home.classList.remove('hidden')
+  alert('Welcome '+(user.name||user.login)+' — prototype dashboard shown as Home for now.')
+}
+
+/* -------------------------
+  Gardening flows
+--------------------------*/
+function gardeningLogin(){
+  const users = dbGet('users')||[]
+  const user = users.find(u=>u.login===document.getElementById('gardLoginUser').value.trim())
+  if(user && user.password===document.getElementById('gardLoginPass').value){
+    hideAll(); views.gardDash.classList.remove('hidden'); addAudit('gard_login',user)
+  } else alert('Invalid gardener login (prototype)')
+}
+function createGardener(){
+  const users = dbGet('users')||[]
+  const login = document.getElementById('gard_reg_login').value.trim() || ('gard_'+Math.floor(Math.random()*9000+1000))
+  if(users.some(u=>u.login===login)){alert('Login exists');return}
+  const u = {
+    id: uid('gard'), type:'gardener', name:document.getElementById('gard_reg_name').value||'',
+    email:document.getElementById('gard_reg_email').value||'', phone:document.getElementById('gard_reg_phone').value||'',
+    address:document.getElementById('gard_reg_addr').value||'', city:document.getElementById('gard_reg_city').value||'', state:document.getElementById('gard_reg_state').value||'',
+    login, password:document.getElementById('gard_reg_pass').value||'', createdAt:new Date().toISOString()
+  }
+  users.push(u); dbSet('users',users); addAudit('create_gardener',u)
+  alert('Gardener created. Login ID: '+login); showGardening()
+}
+function showGardening(){hideAll(); views.gardening.classList.remove('hidden')}
+function gardChoose(kind){
+  document.getElementById('gard-form').classList.remove('hidden')
+  document.getElementById('gard-form').dataset.kind = kind
+}
+function gardSubmit(){
+  const a = document.getElementById('gard_area').value
+  const s = document.getElementById('gard_soil').value
+  const kind = document.getElementById('gard-form').dataset.kind||'Unknown'
+  addAudit('gard_choice',{kind,area:a,soil:s})
+  alert(`Saved: ${kind} on ${a} sq m, soil: ${s}. (Prototype)`)
+  hideAll(); views.gardDash.classList.remove('hidden')
+}
+
+/* -------------------------
+  Market flows & simulated live prices
+--------------------------*/
+const seedPrices = [
+  {name:'Wheat',cat:'Crops',price:2300},{name:'Rice',cat:'Crops',price:2100},
+  {name:'Tomato',cat:'Vegetables',price:35},{name:'Potato',cat:'Vegetables',price:22},
+  {name:'Mango',cat:'Fruits',price:120},{name:'Banana',cat:'Fruits',price:34},
+  {name:'Rose (per dozen)',cat:'Plants/Flowers',price:180},{name:'Lawn Plant',cat:'Plants/Flowers',price:180}
+]
+if(!dbGet('market_prices')) dbSet('market_prices',seedPrices)
+let pricesInterval = null
+function renderPrices(){
+  const grid = document.getElementById('pricesGrid'); grid.innerHTML=''
+  const list = dbGet('market_prices')||[]
+  list.forEach(p=>{
+    const el = document.createElement('div'); el.className='price-card'
+    el.innerHTML = `<div style="font-size:14px">${p.name}</div><div class="price">₹<span data-price-id="${p.name}">${p.price}</span></div><div class="small">Category: ${p.cat}</div>`
+    grid.appendChild(el)
+  })
+  if(pricesInterval) clearInterval(pricesInterval)
+  // simulate live updates
+  pricesInterval = setInterval(()=> {
+    const list = dbGet('market_prices')||[]
+    list.forEach(it=>{
+      // random tiny drift
+      const drift = (Math.random()-0.5)*2
+      it.price = Math.max(1, Math.round((it.price + drift)))
+    })
+    dbSet('market_prices',list)
+    list.forEach(it=>{
+      const el = document.querySelector(`[data-price-id="${it.name}"]`)
+      if(el) el.innerText = it.price
+    })
+  }, 1800)
+}
+
+function marketLogin(){
+  const login = document.getElementById('marketLoginUser').value.trim(), pass = document.getElementById('marketLoginPass').value
+  const users = dbGet('users')||[]
+  const u = users.find(x=> (x.login===login) && (x.password===pass) && (x.type==='buyer' || x.type==='seller' || x.type==='both' || x.type==='market'))
+  if(u){ alert('Market login success'); addAudit('market_login',u); hideAll(); views.home.classList.remove('hidden')}
+  else alert('Invalid market credentials (prototype)')
+}
+
+function createMarketUser(){
+  const users = dbGet('users')||[]
+  const login = document.getElementById('market_reg_login').value.trim() || ('market_'+Math.floor(Math.random()*9000+1000))
+  if(users.some(u=>u.login===login)){alert('Login exists');return}
+  const u = {
+    id:uid('market'), type: document.getElementById('market_reg_type').value.toLowerCase(),
+    name:document.getElementById('market_reg_name').value||'', phone:document.getElementById('market_reg_phone').value||'',
+    address:document.getElementById('market_reg_addr').value||'', city:document.getElementById('market_reg_city').value||'', state:document.getElementById('market_reg_state').value||'',
+    pin:document.getElementById('market_reg_pin').value||'', aadhaar:document.getElementById('market_reg_aadhaar').value||'', bank:document.getElementById('market_reg_bank').value||'',
+    login, password:document.getElementById('market_reg_pass').value||'', createdAt:new Date().toISOString()
+  }
+  users.push(u); dbSet('users',users); addAudit('create_market_user',u)
+  alert('Market account created. Login ID: '+login)
+  backToMarket()
+}
+
+/* -------------------------
+  Admin
+--------------------------*/
+function checkAdmin(){
+  const pass = document.getElementById('adminPass').value
+  // for demo, admin password is 'admin123' unless set in localStorage
+  const master = localStorage.getItem('admin_master') || 'admin123'
+  if(pass===master){ document.getElementById('adminArea').classList.remove('hidden'); renderAdmin(); addAudit('admin_open',{})}
+  else alert('Incorrect admin password (default: admin123).')
+}
+function renderAdmin(){
+  const users = dbGet('users')||[]
+  const tbody = document.querySelector('#adminUsers tbody'); tbody.innerHTML=''
+  users.forEach(u=>{
+    const tr = document.createElement('tr')
+    tr.innerHTML = `<td>${u.id}</td><td>${u.type}</td><td>${u.name || u.login}</td><td>${u.phone||''}</td>`
+    tbody.appendChild(tr)
+  })
+  // audit
+  const logs = dbGet('audit')||[]
+  document.getElementById('auditList').innerHTML = logs.slice(0,20).map(l=>`<div><strong>${l.action}</strong> @ ${new Date(l.at).toLocaleString()} — ${JSON.stringify(l.meta||'')}</div>`).join('')
+}
+function publishNews(){
+  const title = document.getElementById('newsTitle').value.trim(), body = document.getElementById('newsBody').value.trim()
+  if(!title||!body){alert('Title + body required');return}
+  const news = dbGet('news')||[]
+  news.unshift({id:uid('news'),title,body,at:new Date().toISOString()})
+  dbSet('news',news); addAudit('publish_news',{title})
+  alert('News published (local only)')
+  document.getElementById('newsTitle').value='';document.getElementById('newsBody').value=''
+  renderAdmin()
+}
+function setCommonPass(){ const p=document.getElementById('commonPassword').value || null; dbSet('common_password',p); addAudit('set_common_pass',{p}); alert('Common password set (local)')}
+function addAdminMaster(pass){ localStorage.setItem('admin_master',pass) }
+
+/* -------------------------
+  small helpers for help links
+--------------------------*/
+document.getElementById('helpBtn').onclick = ()=>{
+  alert('Help: This is a prototype. Use the Create Account flows to add users. Data is stored in browser localStorage.')
+}
+document.getElementById('sitemapBtn').onclick = ()=> alert('Site map: Home → Farming → Gardening → Buy/Sell → Admin')
+document.getElementById('howBtn').onclick = ()=> alert('How to use: Click an option on home. Register/ login per flow. Prices page shows simulated live prices.')
+
+/* -------------------------
+  Misc helpers & startup
+--------------------------*/
+goHome(); renderPrices()
+
+// Expose some functions for quick use in console while prototyping:
+window._farmDB = {get:dbGet,set:dbSet,addAudit,seedPrices}
+</script>
+</body>
+</html>
